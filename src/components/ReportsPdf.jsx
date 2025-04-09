@@ -1,0 +1,160 @@
+import React from "react";
+import { Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
+
+// Define enhanced styles for the PDF
+const styles = StyleSheet.create({
+  page: {
+    padding: 40,
+    fontSize: 12,
+    flexDirection: "column",
+    backgroundColor: "#f9f9f9",
+  },
+  logo: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    width: 100,
+    height: 50,
+  },
+  header: {
+    textAlign: "center",
+    marginBottom: 30,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  section: {
+    marginBottom: 15,
+    padding: 15,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+  },
+  sectionHeader: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 10,
+    borderBottom: "2px solid #0073e6",
+    paddingBottom: 5,
+    color: "#0073e6",
+  },
+  details: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 5,
+  },
+  key: {
+    fontWeight: "bold",
+    color: "#555",
+  },
+  value: {
+    color: "#333",
+  },
+  footer: {
+    position: "absolute",
+    bottom: 20,
+    left: 40,
+    right: 40,
+    fontSize: 10,
+    textAlign: "center",
+    color: "#888",
+    borderTop: "1px solid #ddd",
+    paddingTop: 10,
+  },
+});
+
+// Define the PDF document
+const ReportPDF = ({ detailedReport = {} }) => {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        {/* Add logo to the top-right */}
+        <Image style={styles.logo} src="/src/assets/logo1.png" />
+
+        {/* Centered header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>Order Report</Text>
+        </View>
+
+        {/* Report Details Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionHeader}>Client Information</Text>
+          <View style={styles.details}>
+            <Text style={styles.key}>Client Name:</Text>
+            <Text style={styles.value}>{detailedReport.client_name || "N/A"}</Text>
+          </View>
+          <View style={styles.details}>
+            <Text style={styles.key}>Region:</Text>
+            <Text style={styles.value}>{detailedReport.region_name || "N/A"}</Text>
+          </View>
+          <View style={styles.details}>
+            <Text style={styles.key}>Location:</Text>
+            <Text style={styles.value}>
+              {detailedReport.city_name || "N/A"},{" "}
+              {detailedReport.barangay_name || "N/A"}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionHeader}>Order Details</Text>
+          <View style={styles.details}>
+            <Text style={styles.key}>P.O. Number:</Text>
+            <Text style={styles.value}>{detailedReport.purchase_order_number || "N/A"}</Text>
+          </View>
+          <View style={styles.details}>
+            <Text style={styles.key}>Machine Description:</Text>
+            <Text style={styles.value}>{detailedReport.stock_machine_description || "N/A"}</Text>
+          </View>
+          <View style={styles.details}>
+            <Text style={styles.key}>Brand:</Text>
+            <Text style={styles.value}>{detailedReport.brand_name || "N/A"}</Text>
+          </View>
+          <View style={styles.details}>
+            <Text style={styles.key}>Model:</Text>
+            <Text style={styles.value}>{detailedReport.model_name || "N/A"}</Text>
+          </View>
+          <View style={styles.details}>
+            <Text style={styles.key}>Quantity:</Text>
+            <Text style={styles.value}>{detailedReport.quantity || "N/A"}</Text>
+          </View>
+          <View style={styles.details}>
+            <Text style={styles.key}>Serial Number:</Text>
+            <Text style={styles.value}>{detailedReport.serial_number || "N/A"}</Text>
+          </View>
+          <View style={styles.details}>
+            <Text style={styles.key}>Delivery Date:</Text>
+            <Text style={styles.value}>
+              {detailedReport.delivery_date
+                ? new Date(detailedReport.delivery_date).toLocaleDateString()
+                : "N/A"}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionHeader}>Service Details</Text>
+          <View style={styles.details}>
+            <Text style={styles.key}>Assigned Service Engineer:</Text>
+            <Text style={styles.value}>{detailedReport.assigned_user_name || "N/A"}</Text>
+          </View>
+          <View style={styles.details}>
+            <Text style={styles.key}>Type of Service:</Text>
+            <Text style={styles.value}>
+              {detailedReport.order_types?.[0]?.service_type_name || "N/A"}
+            </Text>
+          </View>
+        </View>
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <Text>Generated by Carewell Biomedical Systems Co. | {new Date().toLocaleDateString()}</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+};
+
+export default ReportPDF;
